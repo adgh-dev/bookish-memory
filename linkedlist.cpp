@@ -8,8 +8,11 @@ struct ListNode {
     ListNode(int x): val(x), next(NULL) {}
 };
 
-void print_list(ListNode& listHead);
-void delete_node(int mark, ListNode& listHead);
+void print_list(ListNode* listHead);
+void delete_node(int mark, ListNode* listHead);
+ListNode* pass_list_rec(ListNode* listNode);
+
+ListNode* new_head;
 
 int main() {
     ListNode head = ListNode(1);
@@ -20,15 +23,16 @@ int main() {
         currentNode = currentNode->next;
     }
 
-    print_list(head);
-    delete_node(4, head);
-    print_list(head);
+    print_list(&head);
+    // delete_node(4, &head);
+    pass_list_rec(&head);
+    print_list(new_head);
 
     return 0;
 }
 
-void delete_node(int mark, ListNode& listHead) {
-    ListNode* currentNode = &listHead;
+void delete_node(int mark, ListNode* listHead) {
+    ListNode* currentNode = listHead;
 
     if (currentNode->val == mark) {
         currentNode = currentNode->next;
@@ -42,11 +46,27 @@ void delete_node(int mark, ListNode& listHead) {
     }
 }
 
-void print_list(ListNode& listHead) {
-    ListNode* currentNode = &listHead;
+void print_list(ListNode* listHead) {
+    ListNode* currentNode = listHead;
     while (currentNode != NULL) {
         cout << currentNode->val << " ";
         currentNode = currentNode->next;
     }
     cout << endl;
+}
+
+ListNode* pass_list_rec(ListNode* listNode){
+    static int counter = 0;
+    if(listNode->next != NULL) {
+        counter++;
+        ListNode* nextNode = pass_list_rec(listNode->next);
+        nextNode->next = listNode;
+        counter--;
+    }
+    else {
+        new_head = listNode;
+    }
+    if (counter == 0)
+        listNode->next = NULL;
+    return listNode;
 }
