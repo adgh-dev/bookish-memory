@@ -3,8 +3,6 @@
 using namespace std;
 
 int main() {
-    int x = 17;
-    x %= 4;
-    cout << x << endl;
+    cout << max(30, 35) + 1 << endl;
     return 0;
 }
