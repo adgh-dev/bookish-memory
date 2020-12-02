@@ -12,11 +12,11 @@ struct ListNode {
 
 class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    static ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         // if one number is 0 return the other number as linked list
-        if (l1->val == 0)
+        if (l1->val == 0 && l1->next == NULL)
             return l2;
-        if (l2->val == 0)
+        if (l2->val == 0 && l2->next == NULL)
             return l1;
 
         ListNode* rez = new ListNode();
@@ -29,18 +29,30 @@ public:
                 a = l1->val;
                 l1 = l1->next;
             }
+            else
+                a = 0;
             if (l2 != NULL) {
                 b = l2->val;
                 l2 = l2->next;
             }
-            sum = a + b;
-            if (sum > 10) {
+            else
+                b = 0;
+
+            sum = a + b + rem;
+            rem = 0;
+            if (sum > 9) {
                 sum -= 10;
                 rem = 1;
             }
-            _->next = new ListNode(sum + rem);
-            if (l1 == NULL && l2 == NULL) {}
+            // cout << sum << " ";
+
+            _->next = new ListNode(sum);
+            _ = _->next;
+
+            if (l1 == NULL && l2 == NULL) {
+                // cout << endl;
                 break;
+            }
         }
         if (rem > 0)
             _->next = new ListNode(rem);
@@ -58,8 +70,8 @@ void print_list(ListNode* listHead) {
 }
 
 int main() {
-    int _a[] = {5, 0, 6, 0 ,3};
-    int _b[] = {1, 7, 6, 0, 6};
+    int _a[] = {0,8,6,5,6,8,3,5,7};
+    int _b[] = {6,7,8,0,8,5,8,9,7};
     ListNode* a = new ListNode();
     ListNode* b = new ListNode();
     ListNode* c_tmp;
@@ -78,6 +90,10 @@ int main() {
 
     print_list(a->next);
     print_list(b->next);
+
+    print_list(
+        Solution::addTwoNumbers(a->next, b->next)
+    );
 
     return 0;
 }
